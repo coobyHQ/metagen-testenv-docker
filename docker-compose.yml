@@ -1,0 +1,21 @@
+version: '2'
+
+services:
+  metagen-testenv-identityserver:
+    container_name: metagen-testenv-identityserver
+    build: identity-server/
+    ports:
+      - "9443:9443"
+
+  metagen-testenv-backoffice:
+    container_name: metagen-testenv-backoffice
+    build: backoffice/
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./config.js:/metagen-testenvironment/bo/backoffice/server/wso2/config.js
+    environment:
+      - NODE_ENV=development
+      - NODE_TLS_REJECT_UNAUTHORIZED=0
+    depends_on:
+      - metagen-testenv-identityserver
